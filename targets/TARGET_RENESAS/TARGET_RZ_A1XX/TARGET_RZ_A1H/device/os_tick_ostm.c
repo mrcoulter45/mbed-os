@@ -24,8 +24,8 @@
 
 #ifdef MBED_CONF_RTOS_PRESENT
 
-#include "os_tick.h"
 #include "irq_ctrl.h"
+#include "os_tick.h"
 
 #include <MBRZA1H.h>
 
@@ -130,43 +130,43 @@ int32_t OS_Tick_Setup (uint32_t freq, IRQHandler_t handler)
   return (0);
 }
 
-/// Enable OS Tick.
-void  OS_Tick_Enable (void)
-{
+// Enable OS Tick.
+// void  OS_Tick_Enable (void)
+// {
 
-  if (OSTM_PendIRQ != 0U) {
-    OSTM_PendIRQ = 0U;
-    IRQ_SetPending (OSTM_IRQn);
-  }
+//   if (OSTM_PendIRQ != 0U) {
+//     OSTM_PendIRQ = 0U;
+//     IRQ_SetPending (OSTM_IRQn);
+//   }
 
-  // Start the OSTM counter
-  OSTM.OSTMnTS = 0x01U;
-}
+//   // Start the OSTM counter
+//   OSTM.OSTMnTS = 0x01U;
+// }
 
-/// Disable OS Tick.
-void  OS_Tick_Disable (void)
-{
+// Disable OS Tick.
+// void  OS_Tick_Disable (void)
+// {
 
-  // Stop the OSTM counter
-  OSTM.OSTMnTT = 0x01U;
+//   // Stop the OSTM counter
+//   OSTM.OSTMnTT = 0x01U;
 
-  if (IRQ_GetPending(OSTM_IRQn) != 0) {
-    IRQ_ClearPending (OSTM_IRQn);
-    OSTM_PendIRQ = 1U;
-  }
-}
+//   if (IRQ_GetPending(OSTM_IRQn) != 0) {
+//     IRQ_ClearPending (OSTM_IRQn);
+//     OSTM_PendIRQ = 1U;
+//   }
+// }
 
 // Acknowledge OS Tick IRQ.
-void  OS_Tick_AcknowledgeIRQ (void)
-{
-  IRQ_ClearPending (OSTM_IRQn);
-}
+// void  OS_Tick_AcknowledgeIRQ (void)
+// {
+//   IRQ_ClearPending (OSTM_IRQn);
+// }
 
 // Get OS Tick IRQ number.
-int32_t  OS_Tick_GetIRQn (void)
-{
-  return (OSTM_IRQn);
-}
+// int32_t  OS_Tick_GetIRQn (void)
+// {
+//   return (OSTM_IRQn);
+// }
 
 // Get OS Tick clock.
 uint32_t OS_Tick_GetClock (void)
@@ -175,23 +175,27 @@ uint32_t OS_Tick_GetClock (void)
 }
 
 // Get OS Tick interval.
-uint32_t OS_Tick_GetInterval (void)
-{
-  return (OSTM.OSTMnCMP + 1U);
-}
+// uint32_t OS_Tick_GetInterval (void)
+// {
+//   return (OSTM.OSTMnCMP + 1U);
+// }
 
 // Get OS Tick count value.
-uint32_t OS_Tick_GetCount (void)
-{
-  uint32_t cmp = OSTM.OSTMnCMP;
-  return  (cmp - OSTM.OSTMnCNT);
-}
+// uint32_t OS_Tick_GetCount (void)
+// {
+//   uint32_t cmp = OSTM.OSTMnCMP;
+//   return  (cmp - OSTM.OSTMnCNT);
+// }
 
 // Get OS Tick overflow status.
-uint32_t OS_Tick_GetOverflow (void)
-{
-  return (IRQ_GetPending(OSTM_IRQn));
-}
+// uint32_t OS_Tick_GetOverflow (void)
+// {
+//   return (IRQ_GetPending(OSTM_IRQn));
+// }
 
+// Get Cortex-A9 OS Timer interrupt number
+IRQn_ID_t mbed_get_a9_tick_irqn(){
+  return OSTMI0TINT_IRQn;
+}
 #endif
 
